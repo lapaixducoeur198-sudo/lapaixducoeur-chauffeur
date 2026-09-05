@@ -98,20 +98,20 @@ class _ChauffeurHomeScreenState extends State<ChauffeurHomeScreen> {
   void _showAcceptRideDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text('Nouvelle course proposée'),
           content: const Text('Voulez-vous accepter cette course de 1500 FCFA ?'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(dialogContext),
               child: const Text('Refuser', style: TextStyle(color: Colors.red)),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.amber[800]),
               onPressed: () {
-                Navigator.pop(context);
-                // Redirection vers l'écran de navigation GPS de la course
+                Navigator.pop(dialogContext); // Ferme la boîte de dialogue
+                // Ouvre l'écran GPS de navigation
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const RideNavigationScreen()),
@@ -138,7 +138,6 @@ class RideNavigationScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Simulation de la carte GPS (Fond de carte interactif visuel)
           Container(
             color: Colors.grey[200],
             child: Center(
@@ -159,7 +158,7 @@ class RideNavigationScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
-                      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+                      boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4)],
                     ),
                     child: const Row(
                       children: [
@@ -178,7 +177,6 @@ class RideNavigationScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Bouton de fin de course en bas
           Positioned(
             bottom: 24,
             left: 24,
@@ -190,7 +188,7 @@ class RideNavigationScreen extends StatelessWidget {
               ),
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Course terminée avec succès ! Paiement validé.')),
+                  const SnackBar(content: Text('Course terminée avec succès !')),
                 );
                 Navigator.pop(context);
               },
@@ -205,3 +203,4 @@ class RideNavigationScreen extends StatelessWidget {
     );
   }
 }
+
