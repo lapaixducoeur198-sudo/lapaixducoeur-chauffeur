@@ -19,10 +19,6 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Create Flutter Project Structure
-        run: |
-          flutter create . --org com.lapaixducoeur --project-name lapaixducoeur_chauffeur --platforms=android
-
       - name: Install Dependencies
         run: flutter pub get
 
