@@ -111,8 +111,10 @@ class _ChauffeurHomeScreenState extends State<ChauffeurHomeScreen> {
               style: ElevatedButton.styleFrom(backgroundColor: Colors.amber[800]),
               onPressed: () {
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Course acceptée ! Route vers le client...')),
+                // Redirection vers l'écran de navigation GPS de la course
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RideNavigationScreen()),
                 );
               },
               child: const Text('Accepter', style: TextStyle(color: Colors.white)),
@@ -120,6 +122,86 @@ class _ChauffeurHomeScreenState extends State<ChauffeurHomeScreen> {
           ],
         );
       },
+    );
+  }
+}
+
+class RideNavigationScreen extends StatelessWidget {
+  const RideNavigationScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Navigation GPS - En route'),
+        backgroundColor: Colors.amber[800],
+      ),
+      body: Stack(
+        children: [
+          // Simulation de la carte GPS (Fond de carte interactif visuel)
+          Container(
+            color: Colors.grey[200],
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.map, size: 80, color: Colors.amber),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Carte GPS active\nTrajet vers le client en cours...',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.navigation, color: Colors.blue),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            'Direction : Boulevard de la République -> Plateau',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Bouton de fin de course en bas
+          Positioned(
+            bottom: 24,
+            left: 24,
+            right: 24,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+              ),
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Course terminée avec succès ! Paiement validé.')),
+                );
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Arrivé à destination / Terminer',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
