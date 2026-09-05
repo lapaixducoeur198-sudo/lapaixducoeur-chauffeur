@@ -19,8 +19,13 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Install Dependencies
-        run: flutter pub get
+      - name: Check or Create Flutter Project
+        run: |
+          if [ ! -f "pubspec.yaml" ]; then
+            flutter create . --org com.lapaixducoeur --project-name lapaixducoeur_chauffeur --platforms=android
+          else
+            flutter pub get
+          fi
 
       - name: Build APK Release
         run: flutter build apk --release
