@@ -1,0 +1,36 @@
+name: Build Chauffeur APK
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+          cache: true
+
+      - name: Create Flutter Project Structure
+        run: |
+          flutter create . --org com.lapaixducoeur --project-name lapaixducoeur_chauffeur --platforms=android
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build APK Release
+        run: flutter build apk --release
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-chauffeur-release
+          path: build/app/outputs/flutter-apk/app-release.apk
